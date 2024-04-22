@@ -45,11 +45,12 @@ public class QuizService {
 		
 	}
 	
-public List<String> getCat(){
+public List<Quiz> getCat(){
 	try {
 
 		List<Quiz>allQuiz= quiz.findAll();
 		Set<String>cat=new HashSet<>();
+		
 		for(Quiz q:allQuiz) {
 			int question=0;
 			String currentCat=q.getCategory();
@@ -60,11 +61,23 @@ public List<String> getCat(){
 				    }
 			  }
 			  if(question>=10)
-			 cat.add(q.getCategory());
+			  cat.add(q.getCategory());
+		}
+		
+		List<Quiz>res=new ArrayList<>();
+		for(Quiz q:allQuiz) 
+		{
+		      if(cat.contains(q.getCategory())) 
+		      {
+		    	  
+		    	  cat.remove(q.getCategory());
+		    	   res.add(q);
+		      }
 		}
 		
 		
-		List<String>res=new ArrayList<>(cat);
+		
+		
 		return res;	
 		
 	} catch (Exception e) {
@@ -83,21 +96,24 @@ public String submitQuiz(int userId,int score,String cat) {
 		 
 		 
 		  Optional<User> currentUser=user.findById(userId);
-		  
-		  
-		   
+		
 		  if(currentUser.get()!=null) 
 		  {
 			 User u= currentUser.get();
+			  
+			   System.out.println("User present:  "+u);
+			   
 			 UserQuiz userQuiz=new UserQuiz(score,cat);
 			 
 			 
 			 u.allQuiz.add(userQuiz);
 			 user.save(u);
+			  System.out.println("Quiz save sucesfully");	
 			 return "Save data succesfully";
 			 
 			  
 		  }
+		  System.out.println("Error while saving data");
 		  return "Not able to save data";
 		 
 		 
@@ -111,7 +127,14 @@ public String submitQuiz(int userId,int score,String cat) {
 		return "Sorry not able to save data";
 	}
 }
-
+  public List<Quiz> getAllQuiz(){
+	    try {
+			 return quiz.findAll();
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+  }
  
 
 }

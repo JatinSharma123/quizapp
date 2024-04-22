@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -67,11 +69,13 @@ public class User
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
   public int userId;
+	 @Column(unique = true)
  public String userName;
  public String password;
+ @Column(unique = true)
  public String email;
  public boolean isAdmin;
  
-  @OneToMany(cascade=CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL)
  public List<UserQuiz> allQuiz=new ArrayList<>();
 }

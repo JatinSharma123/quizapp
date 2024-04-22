@@ -80,6 +80,6 @@ public class Quiz {
   public String correctAnswer;
   public String category;
   public String categoryImage;	
-  
+  public String categoryDescription;	
 	
 }

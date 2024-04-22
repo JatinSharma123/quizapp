@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -33,12 +34,13 @@ public class QuizController {
 	     private ModelMapper modelMapper;
 
 	 @GetMapping("/getQuiz/{cat}")
-	 @CrossOrigin("http://localhost:3000")
+
 	 public List<Quiz> getQuiz(@PathVariable("cat")String cat){
-		 
+		    
 		 
 		 List<Quiz>li= quiz.getQuiz(cat);
 		   Collections.shuffle(li);
+		   System.out.println(cat);
 		   if(li.size()>=10) {
 			   return 	 li.subList(0, 10); 
 		   }
@@ -48,12 +50,25 @@ public class QuizController {
 		 
 		 
 	 }
+	 @GetMapping("/getCompleteQuiz/{cat}")
+	
+	 public List<Quiz> getCompleteQuiz(@PathVariable("cat")String cat){
+		    
+		 
+		 List<Quiz>li= quiz.getQuiz(cat);
+		 
+		 
+			   return li;
+			   
+		 
+		 
+	 }
 	 
 	 @PostMapping("/addQuiz")
-	 @CrossOrigin("http://localhost:3000")
+	 
 	 public List<Quiz> addQuiz(@RequestBody Map<String, Object> payload) 
 	 {
-		
+		  System.out.println(payload);
 		 ArrayList<Object>q=(ArrayList<Object>)payload.get("quiz");
 		 ArrayList<Quiz>res=new ArrayList<>();
 		  for(Object o:q) {
@@ -66,12 +81,19 @@ public class QuizController {
 	   //return null;	
 	     return   quiz.addQuiz(res);	 
 	 }
+	 @PostMapping("/addQuizJson")
+	 public List<Quiz>addQuizJson(@RequestBody ArrayList<Quiz>q){
+	      
+		 return quiz.addQuiz(q);
+		// return quiz.addQuiz(al);
+	 }
 	 @GetMapping("/allCategories")
-	 public List<String	> getCategories(){
+	 public List<Quiz> getCategories(){
 		 
 		 
-		 return quiz.getCat();
-		 
+		 List<Quiz>r= quiz.getCat();
+		   System.out.print(r);
+		   return r;	
 	 }
 	 @PostMapping("/submitQuiz")
 	  public String submitQuiz(@RequestBody Map<String,Object> req) {
@@ -86,6 +108,10 @@ public class QuizController {
 		 return quiz.submitQuiz(userId,score,quizCat);
 		 
 		 
+	 }
+	 @GetMapping("/allQuestions")
+	 public List<Quiz> getAllQuestions(){
+		    return quiz.getAllQuiz();
 	 }
 	 
 	 

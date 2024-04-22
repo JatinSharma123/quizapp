@@ -1,5 +1,10 @@
 package com.example.demo.entity;
 
+
+
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,6 +12,8 @@ import jakarta.persistence.Id;
 
 @Entity
 public class UserQuiz {
+	
+	
 	@Override
 	public String toString() {
 		return "UserQuiz [quizId=" + quizId + ", score=" + score + ", cat=" + cat + "]";
@@ -19,6 +26,7 @@ public class UserQuiz {
 	public int quizId;
 	public int score;
 	public String cat;
+	
 	public int getQuizId() {
 		return quizId;
 	}

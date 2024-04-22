@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +18,17 @@ public class UserService {
 	UserDao user;
         
 	public User createUser(User u) {
+	   System.out.println(u);
 		try {
 			
+			 
+			User findUser=user.findByEmailOrUserName(u.getEmail(),u.getUserName());
+			  if(findUser!=null)
+			  {
+				  
+				return null;  
+			  }
+			  
 			return user.save(u);
 			
 			
@@ -46,7 +56,9 @@ public class UserService {
 		 if(op.get()!=null) {
 			  
 			  User u=op.get();
-			  return u.getAllQuiz();
+			  List<UserQuiz>li=u.getAllQuiz();
+			  Collections.reverse(li);
+			return li;
 			  
 		 }
 		 else
