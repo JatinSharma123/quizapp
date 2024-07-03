@@ -19,20 +19,41 @@ import com.example.demo.entity.UserQuiz;
 import com.example.demo.service.UserService;
 
 @RestController
-@CrossOrigin({"http://localhost:3000","https://quizappsrpring.netlify.app/","https://quizappbackend-production-af37.up.railway.app/"})
+@CrossOrigin({"http://localhost:3000","https://quizappspringreact.netlify.app/","https://quizappbackend-production-af37.up.railway.app/"})
 @RequestMapping("/user")
 public class UserController {
 	@Autowired
 	UserService user;
    @PostMapping("/login")
-    public User login(@RequestBody User u) {
+    public ResponseEntity<User> login(@RequestBody User u) {
 	   
 	    
-	     return user.loginUser(u.email,u.password);
-	     
+	     User newuser= user.loginUser(u.email,u.password);
+	     System.out.println(newuser);	
+	      return ResponseEntity.ok(newuser);
 	   
 	   
    }
+   @PostMapping("/getUser")
+   public ResponseEntity<Integer> getUser(@RequestBody User u) {
+	   
+	   try {
+		   User newuser= user.loginUser(u.email,u.password);
+		     System.out.println(newuser.getUserId());
+		     int userId=newuser.getUserId();
+		     System.out.println(userId);
+		      return ResponseEntity.ok(userId);
+		
+	} catch (Exception e) {
+		// TODO: handle exception
+		return ResponseEntity.ok(-1);
+	}   
+	    
+	   
+	   
+  }
+ 
+  
    @PostMapping("/register")
    public ResponseEntity<?> register(@RequestBody User u) 
    {
@@ -52,8 +73,9 @@ public class UserController {
 	        try 
 	        {
 	        	 System.out.println("userId:"+id);
-	        	 return user.getResults(id);
-
+	        	 List<UserQuiz> u= user.getResults(id);
+	        	 System.out.println(u);
+                 return u;
 			} catch (Exception e) {
 				// TODO: handle exception
 				System.out.println("Errror"+e);
@@ -61,13 +83,14 @@ public class UserController {
 			}
 	      }
    @GetMapping("/allUsers")
-    public List<User> allUsers(){
-	   return user.allUsers();  
+    public ResponseEntity<?> allUsers(){
+	  List<User>li=user.allUsers();
+	   return ResponseEntity.ok(li); 
    }
    @PostMapping("/admin")
-    public User addAdmin(@RequestBody User u) {
+    public ResponseEntity<?> addAdmin(@RequestBody User u) {
 	   
-	    return user.insertAdmin(u);	
-	   
+	    User us=user.insertAdmin(u);	
+	    return ResponseEntity.ok(us);
    }
 }
